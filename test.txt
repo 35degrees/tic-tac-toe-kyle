@@ -1,0 +1,137 @@
+const tiles = document.querySelectorAll('.tile')
+const winningMsg = document.getElementById('winningMessage')
+const message = document.querySelector('.message')
+const restart = document.getElementById('restart')
+
+const winningCombos = [
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[2, 4, 6],
+]
+
+let playerOne = true
+let playerTwo = false
+// let playerOneSymbol = 'X'
+// let playerTwoSymbol = 'O'
+const masterArray = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+function updateTiles() {}
+
+tiles.forEach((tile) => {
+	tile.addEventListener('mouseleave', (e) => {})
+})
+
+function mouseOver(e) {
+	tiles.forEach((tile) => {
+		tile.addEventListener('mouseenter', (e) => {
+			console.log(e.type)
+			const thisTile = e.target
+			const symbol = playerOne ? 'X' : 'O'
+			thisTile.innerText = symbol
+		})
+	})
+}
+
+
+
+// tile.addEventListener('click', (e) => {
+// 	const tileClass = +e.target.classList.value.charAt(10)
+// 	const thisTile = e.target
+// 	thisTile.innerText = playerOneSymbol
+// 	thisTile.style.color = '#000'
+// 	masterArray[tileClass - 1] = 1
+
+// 	playerTwoTurn()
+// })
+
+function enterSymbol(e) {
+	mouseOver(e)
+	console.log({ playerOne })
+	tiles.forEach((tile) => {
+		tile.addEventListener('click', (e) => {
+			const symbol = playerOne ? 'X' : 'O'
+			console.log({ symbol })
+			const tileClass = +e.target.classList.value.charAt(10)
+			const thisTile = e.target
+			thisTile.classList.add(symbol)
+			thisTile.innerText = symbol
+			tile.removeEventListener('mouseleave', mouseExit)
+			console.log('is player one true? ', playerOne)
+			const tally = playerOne ? 1 : -1
+			const color = playerOne ? 'var(--medium-orange)' : 'var(--dark-slate)'
+			thisTile.style.color = color
+			masterArray[tileClass - 1] = tally
+			if (checkWin(symbol)) {
+				endGame(false)
+			} else if (isDraw()) {
+				endGame(true)
+			} else {
+				changeSides()
+			}
+		})
+	})
+	tiles.forEach((tile) => {
+		tile.addEventListener('mouseleave', mouseExit)
+	})
+}
+
+function changeSides() {
+	console.log('where do I show up?')
+	tiles.forEach((tile) => {
+		if (tile.innerText === '') {
+			tile.style.pointerEvents = 'all'
+		} else {
+			tile.style.pointerEvents = 'none'
+		}
+	})
+	console.log(...masterArray)
+	playerOne = !playerOne
+	playerTwo = !playerTwo
+
+	enterSymbol()
+}
+
+function checkWin(symbol) {
+	return winningCombos.some((combo) => {
+		return combo.every((index) => {
+			return tiles[index].classList.contains(symbol)
+		})
+	})
+}
+
+function endGame(draw) {
+	if (draw) {
+		winningMsg.innerText = "It's a draw, try again"
+	} else {
+		winningMsg.innerText = `${playerOne ? 'X' : 'O'} wins!`
+	}
+	message.classList.add('show')
+}
+
+function isDraw() {
+	return [...tiles].every((tile) => {
+		return tile.classList.contains('X' || 'O')
+	})
+}
+
+function restartGame() {
+	console.log('clicked')
+	message.classList.remove('show')
+	tiles.forEach((tile) => {
+		tile.removeEventListener('mouseenter', mouseOver)
+		tile.innerText = ''
+		tile.style.color = 'var(--x-o)'
+		tile.classList.remove('X')
+		tile.classList.remove('O')
+		tile.style.pointerEvents = 'all'
+		symbol = ''
+	})
+	enterSymbol()
+}
+window.addEventListener('DOMContentLoaded', enterSymbol, { once: true })
+restart.addEventListener('click', restartGame)

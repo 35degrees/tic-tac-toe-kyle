@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+*,
+*::before,
+*::after {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--medium-teal: hsl(178, 60%, 48%);
+	--light-teal: hsl(178, 75%, 65%);
+	--medium-orange: hsl(39, 88%, 58%);
+	--light-orange: hsl(39, 100%, 69%);
+	--very-dark-grey: hsl(202, 32%, 15%);
+	--dark-grey: hsl(199, 35%, 19%);
+	--medium-grey: hsl(198, 23%, 72%);
+	--dark-slate: hsl(234, 29%, 20%);
+	--x-o: hsla(18, 10%, 70%);
+}
+.container {
+	height: 100vh;
+	display: grid;
+	place-items: center;
+}
+
+.board {
+	height: 400px;
+	width: 400px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	font-family: 'Fredoka', sans-serif;
+	gap: 0.2rem;
+}
+
+.tile {
+	background-color: #ccccccbb;
+	color: var(--x-o);
+	font-size: 6.5rem;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 700;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.message {
+	position: fixed;
+	z-index: 10;
+	content: '';
+	height: 100vh;
+	width: 100vw;
+	z-index: 1;
+	background-color: #000;
+	top: 0;
+	left: 0;
+	opacity: 0.8;
+	display: none;
+	color: #fff;
+	font-size: 5rem;
+}
+
+#winningMessage {
+	text-align: center;
+	margin: 120px auto;
+	font-family: 'Fredoka', sans-serif;
+	font-size: 4rem;
+}
+
+.message button {
+	position: absolute;
+	padding: 1rem 1.5rem;
+	border-radius: 10px;
+	opacity: 1;
+	font-size: 2rem;
+	border: none;
+	cursor: pointer;
+	top: 250px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	&:hover {
+		background-color: #ccc;
+		color: #fff;
+	}
+}
+
+.message.show {
+	display: flex;
+}
